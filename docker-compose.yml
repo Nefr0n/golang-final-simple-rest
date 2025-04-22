@@ -1,0 +1,28 @@
+services:
+  backend:
+    build: .
+    image: backend-image:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - backend_network
+    depends_on:
+      - db
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_ADDR=${POSTGRES_ADDR}
+  db:
+    image: postgres:16-alpine3.19
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - ./vol/data/postgres:/var/lib/postgresql/data
+    networks:
+      - backend_network
+networks:
+  backend_network:
