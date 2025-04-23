@@ -22,9 +22,13 @@ func NewAuthService(repo repository.AuthRepository, config *config.Config) AuthS
 }
 
 func (s *AuthServiceImpl) RegisterUser(user *entities.User) (string, string, error) {
-	//if err := s.checkUserExists(user.Email); err != nil {
-	//	return "", "", err
-	//}
+	existingUser, err := s.repo.GetUserByEmail(user.Email)
+	if err != nil {
+		return "", "", errors.Wrap(err, "failed to check if user exists")
+	}
+	if existingUser != nil {
+		return "", "", errors.New("user already exists")
+	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -70,17 +74,6 @@ func (s *AuthServiceImpl) generateJWT(id int64) (string, error) {
 	}
 
 	return tokenString, nil
-}
-
-func (s *AuthServiceImpl) checkUserExists(email string) error {
-	existingUser, err := s.repo.GetUserByEmail(email)
-	if err != nil {
-		return errors.Wrap(err, "failed to check if user exists")
-	}
-	if existingUser != nil {
-		return errors.New("user already exists")
-	}
-	return nil
 }
 
 func (s *AuthServiceImpl) generateRefreshToken(id int64) (string, error) {

@@ -1,7 +1,7 @@
 package dto
 
 type User struct {
-	Email    string `json:"email"`
+	Email    string `json:"email" binding:"required,email"`
 	Username string `json:"username"`
 }
 

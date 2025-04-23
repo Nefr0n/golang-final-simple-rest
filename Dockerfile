@@ -31,4 +31,4 @@ USER $USER
 EXPOSE 8080
 
 # Выполнение миграций перед запуском приложения
-CMD sh -c 'goose -dir ./migrations postgres "$POSTGRES_ADDR" up && ./main'
+CMD ["sh", "-c", "goose -dir ./migrations postgres $POSTGRES_ADDR up && ./main"]

@@ -4,8 +4,8 @@ import (
 	"github.com/Skapar/simple-rest/internal/api"
 	"github.com/Skapar/simple-rest/internal/service"
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/files"
-	"github.com/swaggo/gin-swagger"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // SetupRoutes - настройка маршрутов

@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/Skapar/simple-rest/internal/pb;profile";
+
+service ProfileService {
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc CreateProfile(CreateProfileRequest) returns (CreateProfileResponse);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse);
+  rpc DeleteProfile(DeleteProfileRequest) returns (DeleteProfileResponse);
+}
+message Profile {
+  int64 id = 1;
+  int64 user_id = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string bio = 5;
+  string avatar_url = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message GetProfileRequest {
+  int64 id = 1;
+}
+
+message GetProfileResponse {
+  Profile profile = 1;
+}
+
+message CreateProfileRequest {
+  int64 user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string bio = 4;
+  string avatar_url = 5;
+}
+
+message CreateProfileResponse {
+  Profile profile = 1;
+}
+
+message UpdateProfileRequest {
+  int64 id = 1;
+  int64 user_id = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string bio = 5;
+  string avatar_url = 6;
+}
+
+message UpdateProfileResponse {
+  Profile profile = 1;
+}
+
+message DeleteProfileRequest {
+  int64 id = 1;
+}
+
+message DeleteProfileResponse {
+  bool success = 1;
+}

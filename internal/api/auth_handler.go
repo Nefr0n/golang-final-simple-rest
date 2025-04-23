@@ -50,7 +50,7 @@ func (ah *AuthHandler) RegisterUserHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, models.Response[interface{}]{
-		Data:    gin.H{"user": user, "access_token": accessToken, "refresh_token": refreshToken},
+		Data:    gin.H{"access_token": accessToken, "refresh_token": refreshToken},
 		Message: "user registered successfully",
 		Success: true,
 	})

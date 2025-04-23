@@ -44,7 +44,7 @@ func (uh *UserHandler) GetUserHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.Response[entities.User]{
+	c.JSON(http.StatusOK, models.Response[entities.UserResponse]{
 		Data:    *user,
 		Message: "user retrieved successfully",
 		Success: true,
@@ -76,19 +76,24 @@ func (uh *UserHandler) UpdateUserHandler(c *gin.Context) {
 		return
 	}
 
-	user := entities.User{
+	userResp := entities.UserResponse{
 		Username: userDTO.Username,
 		Email:    userDTO.Email,
-		Password: userDTO.Password,
 	}
 
-	if err := uh.userService.UpdateUser(userID, &user); err != nil {
+	if err := uh.userService.UpdateUser(userID, &userResp); err != nil {
 		utils.RespondWithError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, models.Response[entities.User]{
-		Data:    user,
+	updatedUser, err := uh.userService.GetUserById(userID)
+	if err != nil {
+		utils.RespondWithError(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, models.Response[entities.UserResponse]{
+		Data:    *updatedUser,
 		Message: "user updated successfully",
 		Success: true,
 	})
@@ -118,7 +123,7 @@ func (uh *UserHandler) DeleteUserHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.Response[entities.User]{
+	c.JSON(http.StatusOK, models.Response[entities.UserResponse]{
 		Data:    *deletedUser,
 		Message: "user updated successfully",
 		Success: true,
@@ -149,7 +154,7 @@ func (uh *UserHandler) SoftDeleteUserHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.Response[entities.User]{
+	c.JSON(http.StatusOK, models.Response[entities.UserResponse]{
 		Data:    *softDeletedUser,
 		Message: "user soft deleted successfully",
 		Success: true,
